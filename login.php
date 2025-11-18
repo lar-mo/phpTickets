@@ -2,7 +2,7 @@
 
 // database connect script.
 
-//require 'db_connect.php';
+require 'db_connect.php';
 
 if($logged_in == 1) {
 	print "<html>
@@ -11,7 +11,7 @@ if($logged_in == 1) {
 	<meta http-equiv=\"refresh\" content=\"0; url=secure.php\">
 	</head>
 	<body></body></html>
-	"; 
+	";
 
 }
 
@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) { // if form has been submitted
 		die('Incorrect name and/or password, please try again.');
 	}
 
-	// if we get here username and password are correct, 
+	// if we get here username and password are correct,
 	//register session variables and set last login time.
 
 	$date = date('m d, Y');
@@ -108,5 +108,3 @@ include('./includes/topframe_disabled.inc');
 ?>
 </body>
 </html>
-
-

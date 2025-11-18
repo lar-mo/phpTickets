@@ -1,0 +1,30 @@
+# Backup files
+*.bak
+*.bak2
+*.old
+*.backup
+*.tmp
+*BAK*
+*_old.*
+*_disabled.*
+*.jpg
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# IDE files
+.idea/
+.vscode/
+.zed/
+
+# Session files
+sessions/
+
+# Logs
+*.log
+error_log

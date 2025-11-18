@@ -1,6 +1,6 @@
-<?
+<?php
 
-$request_uri = $_ENV["REQUEST_URI"];
+$request_uri = $_SERVER["REQUEST_URI"] ?? '';
 
 $m = date("m");
 $y = date("Y");

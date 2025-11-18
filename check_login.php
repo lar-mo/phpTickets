@@ -24,9 +24,17 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
 		unset($_SESSION['username']);
 		unset($_SESSION['password']);
 		// kill incorrect session variables.
+		return;
 	}
 
 	$db_pass = $pass->fetchRow();
+	
+	if (!$db_pass) {
+		$logged_in = 0;
+		unset($_SESSION['username']);
+		unset($_SESSION['password']);
+		return;
+	}
 
 	// now we have encrypted pass from DB in 
 	//$db_pass['password'], stripslashes() just incase:
@@ -45,6 +53,9 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
 		$logged_in = 1; // they have correct info
 					// in session variables.
 	} else {
+		// DEBUG: Log password mismatch
+		error_log("Password mismatch for user: " . $_SESSION['username']);
+		error_log("Session pass length: " . strlen($_SESSION['password']) . " DB pass length: " . strlen($db_pass['password']));
 		$logged_in = 0;
 		unset($_SESSION['username']);
 		unset($_SESSION['password']);
