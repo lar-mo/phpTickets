@@ -88,19 +88,14 @@ if (!function_exists('mysql_connect')) {
 
 require_once 'DB.php';
 
+// Load database configuration
+require_once 'config.php';
 
-// $db_engine = 'mysqli';
-// $db_user = 'db_user';
-// $db_pass = 'db_password';
-// $db_host = 'db_host';
-// $db_name = 'db_name';
-
-
-$db_engine = 'mysqli';
-$db_user = 'larmo';
-$db_pass = 'zmm63313';
-$db_host = 'localhost';  // Use localhost for production (on same server)
-$db_name = 'phptickets_aretemmnet';
+$db_engine = DB_ENGINE;
+$db_user = DB_USER;
+$db_pass = DB_PASS;
+$db_host = DB_HOST;
+$db_name = DB_NAME;
 
 $datasource = $db_engine.'://'.
 			  $db_user.':'.

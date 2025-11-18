@@ -1,3 +1,6 @@
+# Configuration with credentials
+config.php
+
 # Backup files
 *.bak
 *.bak2
