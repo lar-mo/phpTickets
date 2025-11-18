@@ -1,0 +1,134 @@
+<?php
+
+print "<html>
+<head>
+	<title>Calendar - March 2003</title>
+
+<script language=\"JavaScript\">
+
+function open_window(mypage, myname, w, h, scroll, resize) {
+	var winl = (screen.width - w) / 2;
+	var wint = (screen.height - h) / 2;
+	winprops = 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars='+scroll+',resizable=no'
+	win = window.open(mypage, myname, winprops)
+		if (parseInt(navigator.appVersion) >= 4) { 
+			win.window.focus(); 
+		}
+}
+
+// -->
+</script>
+</head>
+<body>";
+
+include("../includes/vars.inc");
+include("../includes/topframe.inc");
+
+print "
+<center>
+<table border=1>
+<caption><font size=\"+3\"><b>March 2003</b> <a href=\"April.php\">&rsaquo;&rsaquo;</a></font></caption>
+<tr>
+	<th width=50>SUN</th>
+	<th width=50>MON</th>
+	<th width=50>TUE</th>
+	<th width=50>WED</th>
+	<th width=50>THU</th>
+	<th width=50>FRI</th>
+	<th width=50>SAT</th>
+</tr>
+<tr>";
+
+mysql_connect($DBhost,$DBuser,$DBpass) or die("Unable to connect to database");
+@mysql_select_db("$DBName") or die("Unable to select database $DBName"); 
+
+$sqlquery = "SELECT proj_id, proj_name, proj_due_dt FROM projects WHERE proj_status IN ('OPEN','ASSIGNED','PENDING') AND proj_due_dt LIKE '03/%/2003' ORDER BY proj_due_dt";
+
+$result = mysql_query($sqlquery);
+$number = @mysql_numrows($result);
+
+$i = 0;
+while ($number > $i) {
+$theproj_id = mysql_result($result,$i,"proj_id");
+$theproj_name = mysql_result($result,$i,"proj_name");
+$theproj_due_dt = mysql_result($result,$i,"proj_due_dt");
+
+print "$i : $theproj_id : $theproj_name : $theproj_due_dt <br>";
+
+$pattern = " id='$theproj_due_dt'>&nbsp;";
+$replacement = "><a href=\"/pcac2/show.php?type=projects&id=$theproj_id\"><font size=\"-1\">$theproj_name</font></a> <font size=\"-2\">(<a href=\"/pcac2/detail.php?more=$theproj_id\" onClick=\"open_window(this.href,'name','475','400','yes');return false;\">more</a>)</font>";
+
+$calendar .= "
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>01</td><td id='03/01/2003'>&nbsp;</td></tr></table></td>
+</tr>
+<tr>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>02</td><td id='03/02/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>03</td><td id='03/03/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>04</td><td id='03/04/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>05</td><td id='03/05/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>06</td><td id='03/06/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>07</td><td id='03/07/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>08</td><td id='03/08/2003'>&nbsp;</td></tr></table></td>
+</tr>
+<tr>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>09</td><td id='03/09/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>10</td><td id='03/10/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>11</td><td id='03/11/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>12</td><td id='03/12/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>13</td><td id='03/13/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>14</td><td id='03/14/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>15</td><td id='03/15/2003'>&nbsp;</td></tr></table></td>
+</tr>
+<tr>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>16</td><td id='03/16/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>17</td><td id='03/17/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>18</td><td id='03/18/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>19</td><td id='03/19/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>20</td><td id='03/20/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>21</td><td id='03/21/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>22</td><td id='03/22/2003'>&nbsp;</td></tr></table></td>
+</tr>
+<tr>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>23</td><td id='03/23/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>24</td><td id='03/24/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>50</td><td id='03/50/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>26</td><td id='03/26/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>27</td><td id='03/27/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>28</td><td id='03/28/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>29</td><td id='03/29/2003'>&nbsp;</td></tr></table></td>
+</tr>
+<tr>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>30</td><td id='03/30/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td bgcolor='#CCCCCC'>31</td><td id='03/31/2003'>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+	<td width=50 height=50><table height='100%' cellpadding=2><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table></td>
+</tr>
+<tr><td>$i : $number</td></tr>
+";
+
+$calendar = ereg_replace($pattern, $replacement, $calendar);
+
+
+$i++;
+
+}
+
+echo $calendar;
+
+print "</table>
+<a href=\"/pcac2/list.php?type=projects\">Back to Projects</a>
+</center>
+
+</body>
+</html>";
+
+?>
