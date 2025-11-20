@@ -33,8 +33,8 @@ function open_window(mypage, myname, w, h, scroll, resize) {
 	var wint = (screen.height - h) / 2;
 	winprops = 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars='+scroll+',resizable=no'
 	win = window.open(mypage, myname, winprops)
-		if (parseInt(navigator.appVersion) >= 4) { 
-			win.window.focus(); 
+		if (parseInt(navigator.appVersion) >= 4) {
+			win.window.focus();
 		}
 }
 
@@ -63,7 +63,7 @@ include ("includes/vars.inc");
 include ("includes/topframe.inc");
 
 mysql_connect($DBhost,$DBuser,$DBpass) or die("Unable to connect to database");
-@mysql_select_db("$DBName") or die("Unable to select database $DBName"); 
+@mysql_select_db("$DBName") or die("Unable to select database $DBName");
 
 if ($type == 'personnel') {
 
@@ -72,7 +72,7 @@ if ($view == 'groups') {
 $sqlquery = "SELECT * FROM personnel WHERE emp_title = 'group' OR emp_title = 'none'";
 
 } elseif ($group == 'ALL') {
-	
+
 $sqlquery = "SELECT * FROM personnel";
 
 } elseif (strlen($group) < '1') {
@@ -82,7 +82,7 @@ $sqlquery = "SELECT * FROM personnel WHERE emp_title <> 'group' AND emp_title <>
 } else {
 
 $sqlquery = "SELECT * FROM personnel WHERE emp_group = '$group'";
-	
+
 }
 
 $result = mysql_query($sqlquery);
@@ -119,7 +119,7 @@ print "
 	} else {
 
 	print "<table border=0 cellspacing=0 cellpadding=0 width=\"800\"><tr><td width=\"100\">&nbsp;</td><td align=\"center\"><table><tr><td align=\"right\" valign=\"bottom\"><img src=\"./images/members_of_logo1.jpg\" /></td><td align=\"center\" valign=\"bottom\">&nbsp;<b><i>$group</i></b>&nbsp;</td><td align=\"left\" valign=\"bottom\"><img src=\"./images/group_logo1.jpg\" /></td></tr></table></td><td width=\"100\" align=right valign=bottom><!-- a href=\"list_labels.php?type=personnel&group=$group\" onClick=\"open_window(this.href,'name','612','792','no'); return false;\"><font size=\"-1\" face=\"tahoma\">Printable View</font></a --></td></tr></table>";
-	
+
 	}
 
 
@@ -181,7 +181,7 @@ if ($view == 'ALL') {
  $sqlquery = "SELECT proj_id, proj_name, proj_submitter, proj_assignee, date_format(proj_create_dt, '%c/%e/%y %l:%i:%s %p') as proj_create_dt, proj_status, proj_type, proj_priority, proj_desc, proj_notes, proj_due_dt FROM projects WHERE proj_status IN ('OPEN','ASSIGNED','PENDING','VERIFIED') ORDER BY proj_id ASC";
 
 } elseif ($view == 'cal') {
- 
+
  if (strlen($d) > '1') {
 
   $sqlquery = "SELECT proj_id, proj_name, proj_submitter, proj_assignee, date_format(proj_create_dt, '%c/%e/%y %l:%i:%s %p') as proj_create_dt, proj_status, proj_type, proj_priority, proj_desc, proj_notes, proj_due_dt FROM projects WHERE proj_due_dt LIKE '$month/$d/$y'";
@@ -231,7 +231,7 @@ if ($number < 1) {
 	<th><font size=\"-1\" color=\"#000000\">Due Date</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Submitter</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Assignee</font></th>
-	<th><font size=\"-1\" color=\"#000000\">Type</font></th>	
+	<th><font size=\"-1\" color=\"#000000\">Type</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Description</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Priority</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Status</font></th>
@@ -239,7 +239,7 @@ if ($number < 1) {
  <tr><td bgcolor=\"#FFFFFF\" colspan=9><CENTER><h4>There are no tickets that are OPEN, ASSIGNED, PENDING or VERIFIED.</h4>Click here to <a href=\"insert.php?type=projects\">open a ticket</a>.</CENTER></td></tr>
 </table></td></tr></table></center>";
 
-	} else {	
+	} else {
 
 	print "<center>
 <img src=\"./images/projects_big_logo1.jpg\" />
@@ -250,7 +250,7 @@ if ($number < 1) {
 	<th><font size=\"-1\" color=\"#000000\">Due Date</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Submitter</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Assignee</font></th>
-	<th><font size=\"-1\" color=\"#000000\">Type</font></th>	
+	<th><font size=\"-1\" color=\"#000000\">Type</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Description</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Priority</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Status</font></th>
@@ -273,7 +273,7 @@ echo "
 	<th><font size=\"-1\" color=\"#000000\">Due Date</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Submitter</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Assignee</font></th>
-	<th><font size=\"-1\" color=\"#000000\">Type</font></th>	
+	<th><font size=\"-1\" color=\"#000000\">Type</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Description</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Priority</font></th>
 	<th><font size=\"-1\" color=\"#000000\">Status</font></th>
@@ -320,14 +320,14 @@ $j = 0;
 
 				print "<tr>
 					<td align=center bgcolor=\"#FFFFFF\"><font size=\"-1\"><a href=\"show.php?type=projects&id=$theproj_id\">$theproj_id</a></font></td>";
-				print "<td align=center bgcolor=\"#FFFFFF\"><font size=\"-1\"><a href=\"show.php?type=projects&id=$theproj_id\">$theproj_name</a></font><br>";		
+				print "<td align=center bgcolor=\"#FFFFFF\"><font size=\"-1\"><a href=\"show.php?type=projects&id=$theproj_id\">$theproj_name</a></font><br>";
 
 			}
 
 
 	  while ($number2 > $j) {
 
-         $theproj_child = mysql_result($result2,$j,"child");	
+         $theproj_child = mysql_result($result2,$j,"child");
 
 		if ($theproj_id == $theproj_child) {
 
@@ -335,7 +335,7 @@ $j = 0;
 
 		} else {
 
-			if ($j == 0) { echo "<font size=\"-2\">Child:</font>&nbsp;"; }		
+			if ($j == 0) { echo "<font size=\"-2\">Child:</font>&nbsp;"; }
 
 			echo "<font size=\"-2\"><a href=\"show.php?type=projects&id=$theproj_child\">$theproj_child</a></font>";
 

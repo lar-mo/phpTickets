@@ -3,9 +3,8 @@
 	<TITLE> The Personnel and Project Management Tool </TITLE>
 </HEAD>
 
-<FRAMESET rows="100%,*" frameborder="0" framespacing="0" border="0">
+<FRAMESET rows="100%" frameborder="0" framespacing="0" border="0">
   <frame name="main" src="list.php?type=projects">
-  <frame name="blank" src="update.php">
 </FRAMESET>
 
 <noframes>
