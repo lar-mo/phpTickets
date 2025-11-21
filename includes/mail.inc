@@ -77,7 +77,7 @@
 
 		$cc_list = str_replace(" ", ",", "$cc_list");
 
-			$extra .= "Cc: $cc_list";
+			$extra .= "Cc: $cc_list\r\n";
 
 		}
 
