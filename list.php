@@ -151,8 +151,8 @@ $theemp_phone_cell = mysql_result($result,$i,"emp_phone_cell");
 $theemp_notes = mysql_result($result,$i,"emp_notes");
 $theemp_group = mysql_result($result,$i,"emp_group");
 $theemp_address = mysql_result($result,$i,"emp_address");
-$theemp_address = nl2br($theemp_address);
-$theemp_notes = nl2br($theemp_notes);
+$theemp_address = nl2br($theemp_address ?? '');
+$theemp_notes = nl2br($theemp_notes ?? '');
 
 print "
      	<td align=\"center\" bgcolor=\"#FFFFFF\"><font size=\"-1\"><a href=\"show.php?type=personnel&id=$theemp_id\">$theemp_name</a></font></td>

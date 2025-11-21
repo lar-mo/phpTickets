@@ -27,12 +27,11 @@ print "<HTML>
 <hr>
 <table border=0>";
 
-mysql_connect($DBhost,$DBuser,$DBpass) or die("Unable to connect to database");
-@mysql_select_db("$DBName") or die("Unable to select database $DBName"); 
+$conn = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName) or die("Unable to connect to database");
 
 $sqlquery = "SELECT emp_name FROM personnel WHERE emp_title = 'group'";
-$result = mysql_query($sqlquery);
-$number = @mysql_numrows($result);
+$result = mysqli_query($conn, $sqlquery);
+$number = @mysqli_num_rows($result);
 
 $i = 0;
 
@@ -42,23 +41,19 @@ print "<CENTER><P>There Were No Results for Your Search</CENTER>";
 
 } else {
 
-  while ($number > $i) {
-  $group_name = mysql_result($result,$i,"emp_name");
+  while ($row = mysqli_fetch_assoc($result)) {
+  $group_name = $row["emp_name"];
 
 	$sqlquery2 = "SELECT emp_email, emp_title FROM personnel WHERE emp_group = '$group_name'";
-	$result2 = mysql_query($sqlquery2);
-	$number2 = @mysql_numrows($result2);
-	$j = 0;
+	$result2 = mysqli_query($conn, $sqlquery2);
 
-	  while ($number2 > $j) {
-	  $theemp_email = mysql_result($result2,$j,"emp_email");
-	  $theemp_title = mysql_result($result2,$j,"emp_title");
+	  while ($row2 = mysqli_fetch_assoc($result2)) {
+	  $theemp_email = $row2["emp_email"];
+	  $theemp_title = $row2["emp_title"];
 
 	if (($theemp_title !== 'none') && ($theemp_title !== 'group')) {
 
 	$group_list[$i] .= "$theemp_email, ";
-
-	  $j++;
 
 	  }
 
@@ -76,14 +71,9 @@ print "
 }
 
 
-mysql_connect($DBhost,$DBuser,$DBpass) or die("Unable to connect to database");
-@mysql_select_db("$DBName") or die("Unable to select database $DBName"); 
-
 $sqlquery = "SELECT emp_name, emp_email, emp_title FROM personnel";
-$result = mysql_query($sqlquery);
-$number = @mysql_numrows($result);
-
-$i = 0;
+$result = mysqli_query($conn, $sqlquery);
+$number = @mysqli_num_rows($result);
 
 if ($number < 1) {
 
@@ -91,10 +81,10 @@ print "<CENTER><P>There Were No Results for Your Search</CENTER>";
 
 } else {
 
-  while ($number > $i) {
-  $theemp_name = mysql_result($result,$i,"emp_name");
-  $theemp_email = mysql_result($result,$i,"emp_email");
-  $theemp_title = mysql_result($result,$i,"emp_title");
+  while ($row = mysqli_fetch_assoc($result)) {
+  $theemp_name = $row["emp_name"];
+  $theemp_email = $row["emp_email"];
+  $theemp_title = $row["emp_title"];
 
 if (($theemp_title !== 'none') && ($theemp_title !== 'group')) {
 
@@ -105,8 +95,6 @@ if (($theemp_title !== 'none') && ($theemp_title !== 'group')) {
   ";
 
 }
-
-  $i++;
 
   }
 }

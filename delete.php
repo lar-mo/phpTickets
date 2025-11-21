@@ -28,9 +28,9 @@ if ($logged_in == 0) {
 
 include ("includes/vars.inc");
 
-  $connection = mysql_connect($DBhost,$DBuser,$DBpass);
+  $connection = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName);
   if ($connection == false){
-    echo mysql_errno().": ".mysql_error()."<BR>";
+    echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
     exit;
   }   
 
@@ -38,8 +38,8 @@ include ("includes/vars.inc");
 if ($type == 'personnel') {
 
   		$query = "SELECT projects.proj_id, projects.proj_name FROM projects LEFT JOIN personnel ON projects.proj_assignee=personnel.emp_name WHERE personnel.emp_id=$emp_id";
-  		$result = mysql_db_query($DBName, $query);
-		$number = @mysql_numrows($result);
+  		$result = mysqli_query($connection, $query);
+		$number = @mysqli_num_rows($result);
 		$i = 0;
 
   		if ($number > 0){
@@ -60,11 +60,10 @@ if ($type == 'personnel') {
 			 <tr>
 			  <th><b>Tickets:</b></td><td bgcolor=\"#FFFFFF\">";
 		
-		while ($number > $i) {
-		$theproj_id = mysql_result($result,$i,"proj_id");
-		$theproj_name = mysql_result($result,$i,"proj_name");
+		while ($row = mysqli_fetch_assoc($result)) {
+		$theproj_id = $row["proj_id"];
+		$theproj_name = $row["proj_name"];
 		print "<a href=\"show.php?type=projects&id=$theproj_id\">$theproj_id</a>: $theproj_name<br>";
-		$i++;
 		}
 
 		print "
@@ -78,7 +77,7 @@ if ($type == 'personnel') {
 		} else {
 
   		$query2 = "DELETE FROM personnel WHERE emp_id=$emp_id";
-  		$result2 = mysql_db_query($DBName, $query2);
+  		$result2 = mysqli_query($connection, $query2);
 
   		if ($result2){
     		echo "<html><head><script language=\"JavaScript\">"; include('js/mouseover.js'); print "</script></head><body text=\"#000000\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" marginwidth=0 marginheight=0 leftmargin=0 rightmargin=0 topmargin=0 bottommargin=0>";
@@ -102,9 +101,9 @@ if ($type == 'personnel') {
 		";	
 
 		} else {
-    			echo mysql_errno().": ".mysql_error()."<BR>";
+    			echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
   		}
-		  mysql_close ();
+		  mysqli_close($connection);
 		
 		}
 

@@ -169,7 +169,7 @@ print "
 <tr><td>
 <table border=0 cellpadding=5 bgcolor=\"#CCCCCC\">";
 
-if(strlen($theemp_login) > '0') {
+if(strlen($theemp_login ?? '') > '0') {
 
 print "
  <tr>
@@ -453,8 +453,6 @@ print "
   var now = new Date();
   var cal = new CalendarPopup();
   cal.addDisabledDates(null,formatDate(now,\"yyyy-MM-dd\"));
-  cal.addDisabledDates(\"12/25/2003\");
-  cal.addDisabledDates(\"Jan 1, 2005\",null);
   </SCRIPT>
   <input type=\"text\" name=\"proj_due_dt\" value='"; if($theproj_due_dt !== '12/31/2010') { echo "$theproj_due_dt"; } print "' size=\"10\">
   <A HREF=\"#\" onClick=\"cal.select(document.update.proj_due_dt,'anchor17','MM/dd/yyyy'); return false;\" NAME=\"anchor17\" ID=\"anchor17\"><font size=\"-1\">select</font></A>
@@ -476,7 +474,7 @@ print "
   <td bgcolor=\"#FFFFFF\"><textarea name=\"proj_desc\" wrap=\"virtual\" rows=5 cols=36 "; $check2 = $db_object->query("SELECT auth_level FROM users WHERE username = '".$_SESSION['username']."'"); $info2 = $check2->fetchRow(); if($info2['auth_level'] == '3') { echo "onFocus=\"this.blur();\""; } print ">$theproj_desc2</textarea></td>
 </tr>
 "; 
-if(strlen($theproj_update_dt) > '1') { 
+if(strlen($theproj_update_dt ?? '') > '1') { 
 echo "
 <tr>
   <td align=\"center\"><b>Notes</b><br><font size=\"-2\">Last Updated $theproj_update_dt</font></td>      

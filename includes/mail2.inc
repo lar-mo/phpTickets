@@ -45,33 +45,31 @@
 
 		}
 
-		$result = mysql_query($sqlquery);
-		$number = @mysql_numrows($result);
-
-		$i = 0;
+		$result = mysqli_query($connection, $sqlquery);
+		$number = @mysqli_num_rows($result);
 
 		if ($number < 1) {
 		print " ";
 
 		} else {
 
-		while ($number > $i) {
-		$theemp_name = mysql_result($result,$i,"emp_name");
-		$theemp_email = mysql_result($result,$i,"emp_email");
+		while ($row = mysqli_fetch_assoc($result)) {
+		$theemp_name = $row["emp_name"];
+		$theemp_email = $row["emp_email"];
 
 		$to = $theemp_email;
 		$subject = "Ticket $proj_id was added";
 
 		$sqlquery2 = "SELECT emp_email as submitter_email FROM personnel WHERE emp_name = '$proj_submitter' OR emp_login = '$proj_submitter'";		
-		$result2 = mysql_query($sqlquery2);
-		$j = 0;
-		$submitter_email = @mysql_result($result2,$j,"submitter_email");
+		$result2 = mysqli_query($connection, $sqlquery2);
+		$row2 = mysqli_fetch_assoc($result2);
+		$submitter_email = $row2["submitter_email"] ?? '';
 			
 		if(strlen($proj_assignee) < '1') { $extra = "From: The Project Database <phpTickets@aretemm.net>\r\nReply-To: phpTickets@aretemm.net\r\n"; } else { $extra = "From: The Project Database <$submitter_email>\r\nReply-To: $submitter_email\r\n";}
 
 		if (strlen($cc_list) > '1') {
 	
-		$cc_list = ereg_replace("[\r\n\t\ ]", " ", trim($cc_list));		
+		$cc_list = preg_replace("/[\r\n\t ]/", " ", trim($cc_list));		
 
 		$cc_list = str_replace(" ", ",", "$cc_list");
 
@@ -81,9 +79,8 @@
 
 
 $sqlquery3 = "SELECT parent, child FROM parent_child_rel WHERE parent = $proj_id OR child = $proj_id";
-$result3 = mysql_query($sqlquery3);
-$number3 = @mysql_numrows($result3);
-$k = 0;
+$result3 = mysqli_query($connection, $sqlquery3);
+$number3 = @mysqli_num_rows($result3);
 
 	if ($number3 < 1) {
 
@@ -91,10 +88,10 @@ print " ";
 
 	} else {
 
-	  while ($number3 > $k) {
+	  while ($row3 = mysqli_fetch_assoc($result3)) {
 
-         $theproj_parent = mysql_result($result3,$k,"parent");
-         $theproj_child = mysql_result($result3,$k,"child");	
+         $theproj_parent = $row3["parent"];
+         $theproj_child = $row3["child"];	
 
 	    if($theproj_parent !== '0') {
 
@@ -112,21 +109,11 @@ print " ";
 
 	   }
 
-		if ($number2 - 1 == $k) {
-		echo "";
-		} else {
-		echo ", ";
-		}
-
-	  $k++;
-
 	  }
 
 	}
 
 		mail ($to, $subject, $message, $extra);
-
-		$i++;
 		
 		  }
 		 }

@@ -28,9 +28,9 @@ if ($logged_in == 0) {
 
 include ("includes/vars.inc");
 
-  $connection = mysql_connect($DBhost,$DBuser,$DBpass);
+  $connection = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName);
   if ($connection == false){
-    echo mysql_errno().": ".mysql_error()."<BR>";
+    echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
     exit;
   }   
 
@@ -46,10 +46,10 @@ if ($type == 'personnel') {
   }
 
   		$query = "update $type set emp_name=\"$emp_name\", emp_email=\"$emp_email\", emp_title=\"$emp_title\", emp_group=\"$emp_group\", emp_address=\"$emp_address\", emp_phone_hm=\"$emp_phone_hm\", emp_phone_cell=\"$emp_phone_cell\", emp_notes=\"$emp_notes\" WHERE emp_id=$emp_id";
-  		$result = mysql_db_query($DBName, $query);
+  		$result = mysqli_query($connection, $query);
 
   		$query2 = "update users set auth_level='$auth_level' WHERE username='$emp_login'";
-  		$result2 = mysql_db_query($DBName, $query2);
+  		$result2 = mysqli_query($connection, $query2);
 
   		if ($result){
     		echo "<html><head><script language=\"JavaScript\">"; include('js/mouseover.js'); print "</script></head><body text=\"#000000\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" marginwidth=0 marginheight=0 leftmargin=0 rightmargin=0 topmargin=0 bottommargin=0>";
@@ -97,9 +97,9 @@ if ($type == 'personnel') {
 		";	
 
 		} else {
-    			echo mysql_errno().": ".mysql_error()."<BR>";
+    			echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
   		}
-		  mysql_close ();
+		  mysqli_close($connection);
 
 } else {
 
@@ -116,10 +116,10 @@ if ($type == 'personnel') {
 		$mail_proj_notes = $proj_notes3;
 
   		$query1 = "update projects set proj_name=\"$proj_name\", proj_submitter=\"$proj_submitter\", proj_status=\"$proj_status\", proj_type=\"$proj_type\", proj_desc=\"$proj_desc\", proj_notes=concat_ws('<br><br>',proj_notes,'$new_notes'), proj_assignee=\"$proj_assignee\", proj_priority=\"$proj_priority\", proj_update_dt=\"$proj_update_dt\", proj_due_dt=\"$proj_due_dt\" WHERE proj_id=$proj_id";
-  		$result1 = mysql_db_query($DBName, $query1);
+  		$result1 = mysqli_query($connection, $query1);
 
 		$query2 = "update parent_child_rel set parent=\"$parent_id\" WHERE child=$proj_id";
-		mysql_db_query($DBName, $query2);
+		mysqli_query($connection, $query2);
 
   		if ($result1){
     		echo "<html><head><script language=\"JavaScript\">"; include('js/mouseover.js'); print "</script></head><body text=\"#000000\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" marginwidth=0 marginheight=0 leftmargin=0 rightmargin=0 topmargin=0 bottommargin=0>";
@@ -163,23 +163,20 @@ if ($type == 'personnel') {
 
 
 $sqlquery2 = "SELECT parent FROM parent_child_rel WHERE child = $proj_id";
-$result2 = mysql_query($sqlquery2);
-$number2 = @mysql_numrows($result2);
-$j = 0;
+$result2 = mysqli_query($connection, $sqlquery2);
+$number2 = @mysqli_num_rows($result2);
 
 	if ($number2 > 0) {
 
-	  while ($number2 > $j) {
+	  while ($row2 = mysqli_fetch_assoc($result2)) {
 
-         $theproj_parent = mysql_result($result2,$j,"parent");
+         $theproj_parent = $row2["parent"];
 			
 	if($theproj_parent > 0) {	
 
 	 echo "<a href=\"list_project.php?parent_id=$theproj_parent\">$theproj_parent</a> <font size=\"-1\">(parent)</font>";
 
 	}
-	
-	  $j++;
 
 	  }
 
@@ -187,17 +184,17 @@ $j = 0;
 
 
 $sqlquery3 = "SELECT child FROM parent_child_rel WHERE parent = $proj_id";
-$result3 = mysql_query($sqlquery3);
-$number3 = @mysql_numrows($result3);
+$result3 = mysqli_query($connection, $sqlquery3);
+$number3 = @mysqli_num_rows($result3);
 $k = 0;
 
 	if ($number3 > 0) {
 
 	  if ($theproj_parent > 0) { echo "&nbsp;|&nbsp;"; }
 
-	  while ($number3 > $k) {
+	  while ($row3 = mysqli_fetch_assoc($result3)) {
 
-         	$theproj_child = mysql_result($result3,$k,"child");	
+         	$theproj_child = $row3["child"];	
 
 		echo "<a href=\"show.php?type=projects&id=$theproj_child\">$theproj_child</a>";
 
@@ -236,9 +233,9 @@ print "</li>
 		include ('includes/mail.inc');
 
 		} else {
-    			echo mysql_errno().": ".mysql_error()."<BR>";
+    			echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
   		}
-		  mysql_close ();
+		  mysqli_close($connection);
 
 }
 

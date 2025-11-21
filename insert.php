@@ -38,19 +38,20 @@ if ($type == 'personnel') {
   // The submit button was clicked!
   // Get the input for fullname and email then store it in the database.
 
-  $connection = mysql_connect($DBhost,$DBuser,$DBpass);
+  $connection = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName);
   if ($connection == false){
-    echo mysql_errno().": ".mysql_error()."<BR>";
+    echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
     exit;
   }   
 
   $query = "insert into personnel (emp_id,emp_name,emp_email,emp_title,emp_group,emp_address,emp_phone_hm,emp_phone_cell,emp_notes) values ('$emp_id','$emp_name','$emp_email','$emp_title','$emp_group','$emp_address','$emp_phone_hm','$emp_phone_cell','$emp_notes')";
-  $result = mysql_db_query($DBName, $query);
+  $result = mysqli_query($connection, $query);
 
   $query2 = "SELECT MAX(emp_id) as emp_id FROM personnel";
-  $result2 = mysql_db_query($DBName, $query2);
+  $result2 = mysqli_query($connection, $query2);
 
-	$emp_id = mysql_result($result2,$i,"emp_id");
+	$row = mysqli_fetch_assoc($result2);
+	$emp_id = $row["emp_id"];
 
 	  if ($result){
    		echo "<html><head><script language=\"JavaScript\">"; include('js/mouseover.js'); print "</script></head><body bgcolor=\"#FFFFFF\" text=\"#000000\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" marginwidth=0 marginheight=0 leftmargin=0 rightmargin=0 topmargin=0 bottommargin=0>";
@@ -90,9 +91,9 @@ if ($type == 'personnel') {
 		";
 		
 		} else {
-    		echo mysql_errno().": ".mysql_error()."<BR>";
+    		echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
   		}
-		  mysql_close ();
+		  mysqli_close($connection);
 
  } else { 
 
@@ -172,26 +173,24 @@ print "
 	<option></option>";
 
 
-mysql_connect($DBhost,$DBuser,$DBpass) or die("Unable to connect to database");
-@mysql_select_db("$DBName") or die("Unable to select database $DBName"); 
+$conn = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName) or die("Unable to connect to database");
 
 $sqlquery = "SELECT emp_name FROM personnel WHERE emp_title = 'group'";
-$result = mysql_query($sqlquery); 
-$number = @mysql_numrows($result);
+$result = mysqli_query($conn, $sqlquery); 
+$number = @mysqli_num_rows($result);
 
 $i = 0;
 
 // while loop to display all the records that were returned
 
-	while ($number > $i) {
+	while ($row = mysqli_fetch_assoc($result)) {
 
-$theemp_name = mysql_result($result,$i,"emp_name");
+$theemp_name = $row["emp_name"];
 
 	print "<option value=\"$theemp_name\"";	
 		if($theproj_assignee == $theemp_name) echo 'selected'; 
 	print ">$theemp_name</option>\n\t";
 
-$i++;
 	}
 
 print "
@@ -235,24 +234,25 @@ print "
 
 
 
-  $connection = mysql_connect($DBhost,$DBuser,$DBpass);
+  $connection = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName);
   if ($connection == false){
-    echo mysql_errno().": ".mysql_error()."<BR>";
+    echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
     exit;
   }   
 
   if(strlen($proj_due_dt) < '1') { $proj_due_dt = '12/31/2010'; }
 
   $query = "insert into projects (proj_id,proj_name,proj_submitter,proj_create_dt,proj_status,proj_type,proj_desc,proj_notes,proj_assignee,proj_priority,proj_due_dt) values ('$proj_id','$proj_name','$proj_submitter','$proj_create_dt','$proj_status','$proj_type','$proj_desc','$proj_notes','$proj_assignee','$proj_priority','$proj_due_dt')";
-  $result = mysql_db_query($DBName, $query);
+  $result = mysqli_query($connection, $query);
 
   $query2 = "SELECT MAX(proj_id) as proj_id FROM projects";
-  $result2 = mysql_db_query($DBName, $query2);
+  $result2 = mysqli_query($connection, $query2);
 
-	$theproj_id = mysql_result($result2,$i,"proj_id");
+	$row = mysqli_fetch_assoc($result2);
+	$theproj_id = $row["proj_id"];
 
   $query3 = "insert into parent_child_rel (parent,child) values ('0','$theproj_id')";
-  mysql_db_query($DBName, $query3);
+  mysqli_query($connection, $query3);
 
   if ($result){
     		echo "<html><head><script language=\"JavaScript\">"; include('js/mouseover.js'); print "</script></head><body bgcolor=\"#FFFFFF\" text=\"#000000\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" marginwidth=0 marginheight=0 leftmargin=0 rightmargin=0 topmargin=0 bottommargin=0>";
@@ -271,9 +271,10 @@ print "
 			  <td bgcolor=\"#FFFFFF\">";
 
   $query2 = "SELECT MAX(proj_id) as proj_id FROM projects";
-  $result2 = mysql_db_query($DBName, $query2);
+  $result2 = mysqli_query($connection, $query2);
 
-	$proj_id = mysql_result($result2,$i,"proj_id");
+	$row2 = mysqli_fetch_assoc($result2);
+	$proj_id = $row2["proj_id"];
 
 		echo "		
 				<ul>&nbsp;
@@ -297,9 +298,9 @@ print "
 		include ("includes/mail2.inc");
 		
 		} else {
-    		echo mysql_errno().": ".mysql_error()."<BR>";
+    		echo mysqli_errno($connection).": ".mysqli_error($connection)."<BR>";
   		}
-		  mysql_close ();
+		  mysqli_close($connection);
 
  } else { 
 
@@ -384,30 +385,27 @@ print "
   <td bgcolor=\"#FFFFFF\"><select name=\"proj_assignee\" onChange=\"setStatusToAssigned(this.form);\">
 	<option></option>";
 
-$sqlquery = "SELECT emp_name FROM personnel WHERE emp_title = 'group'";
-$result = mysql_query($sqlquery); 
-$number = @mysql_numrows($result);
+$conn2 = mysqli_connect($DBhost,$DBuser,$DBpass,$DBName) or die("Unable to connect to database");
 
-$i = 0;
+$sqlquery = "SELECT emp_name FROM personnel WHERE emp_title = 'group'";
+$result = mysqli_query($conn2, $sqlquery); 
+$number = @mysqli_num_rows($result);
 
 // while loop to display all the records that were returned
 
-	while ($number > $i) {
+	while ($row = mysqli_fetch_assoc($result)) {
 
-$theemp_name = mysql_result($result,$i,"emp_name");
+$theemp_name = $row["emp_name"];
 
 	print "<option value=\"$theemp_name\"";	
 		if($theproj_assignee == $theemp_name) echo 'selected'; 
 	print ">$theemp_name</option>\n\t";
 
-$i++;
 	}
 
 $sqlquery = "SELECT emp_name, emp_title FROM personnel WHERE emp_login <> ''";
-$result = mysql_query($sqlquery);
-$number = @mysql_numrows($result);
-
-$i = 0;
+$result = mysqli_query($conn2, $sqlquery);
+$number = @mysqli_num_rows($result);
 
 if ($number < 1) {
 	print "<CENTER><P>There Were No Results for Your Search</CENTER>";
@@ -415,16 +413,15 @@ if ($number < 1) {
 
 // while loop to display all the records that were returned
 
-	while ($number > $i) {
+	while ($row = mysqli_fetch_assoc($result)) {
 
-$theemp_name = mysql_result($result,$i,"emp_name");
-$theemp_title = mysql_result($result,$i,"emp_title");
+$theemp_name = $row["emp_name"];
+$theemp_title = $row["emp_title"];
 
 if (($theemp_title !== 'none') && ($theemp_title !== 'group' )) {
 	print "<option value=\"$theemp_name\">$theemp_name</option>";
 }
 
-$i++;
  }
 }
 
@@ -453,8 +450,6 @@ print "
 var now = new Date();
 var cal = new CalendarPopup();
 cal.addDisabledDates(null,formatDate(now,\"yyyy-MM-dd\"));
-cal.addDisabledDates(\"12/25/2003\");
-cal.addDisabledDates(\"Jan 1, 2009\",null);
 </SCRIPT>
 <input type=\"text\" name=\"proj_due_dt\" size=\"10\">
 <A HREF=\"#\" onClick=\"cal.select(document.insert.proj_due_dt,'anchor17','MM/dd/yyyy'); return false;\" NAME=\"anchor17\" ID=\"anchor17\"><font size=\"-1\">select</font></A>
