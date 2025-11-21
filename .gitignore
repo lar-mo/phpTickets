@@ -9,7 +9,6 @@ config.php
 *.tmp
 *BAK*
 *_old.*
-*_disabled.*
 *.jpg
 
 # macOS files
