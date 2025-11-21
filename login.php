@@ -46,9 +46,8 @@ if (isset($_POST['submit'])) { // if form has been submitted
 
 	$_POST['passwd'] = stripslashes($_POST['passwd']);
 	$info['password'] = stripslashes($info['password']);
-	$_POST['passwd'] = md5($_POST['passwd']);
 
-	if ($_POST['passwd'] != $info['password']) {
+	if (!password_verify($_POST['passwd'], $info['password'])) {
 		die('Incorrect name and/or password, please try again.');
 	}
 
@@ -61,7 +60,7 @@ if (isset($_POST['submit'])) { // if form has been submitted
 
 	$_POST['uname'] = stripslashes($_POST['uname']);
 	$_SESSION['username'] = $_POST['uname'];
-	$_SESSION['password'] = $_POST['passwd'];
+	$_SESSION['password'] = $info['password'];
 	$db_object->disconnect();
 ?>
 

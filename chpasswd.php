@@ -38,9 +38,8 @@ if (isset($_POST['submit'])) { // if form has been submitted
 	// check passwords match
 
 	$info['password'] = stripslashes($info['password']);
-	$_POST['old_passwd'] = md5($_POST['old_passwd']);
 
-	if ($_POST['old_passwd'] != $info['password']) {
+	if (!password_verify($_POST['old_passwd'], $info['password'])) {
 		die('Old Password was incorrect. Cannot proceed.');
 	}
 
@@ -58,11 +57,7 @@ if (isset($_POST['submit'])) { // if form has been submitted
 	// now we can add them to the database.
 	// encrypt password
 
-	$_POST['passwd'] = md5($_POST['passwd']);
-
-	if (!get_magic_quotes_gpc()) {
-		$_POST['passwd'] = addslashes($_POST['passwd']);
-	}
+	$_POST['passwd'] = password_hash($_POST['passwd'], PASSWORD_DEFAULT);
 
 	$insert = "UPDATE users SET password = '".$_POST['passwd']."' WHERE username = '".$_POST['uname']."'";
 

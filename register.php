@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) { // if form has been submitted
 	// now we can add them to the database.
 	// encrypt password
 
-	$_POST['passwd'] = md5($_POST['passwd']);
+	$_POST['passwd'] = password_hash($_POST['passwd'], PASSWORD_DEFAULT);
 
 	if (!get_magic_quotes_gpc()) {
 		$_POST['passwd'] = addslashes($_POST['passwd']);
