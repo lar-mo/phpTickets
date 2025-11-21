@@ -177,8 +177,7 @@ if (isset($_POST['submit'])) { // if form has been submitted
 	$message .= "\n\n";
 	$message .= "\tUsername: ";
 	$message .= $_POST['uname'];
-	$message .= "\n\tPassword: ";
-	$message .= $_POST['passwd_again'];
+	$message .= "\n\tPassword: (not shown for security)";
 	$message .= "\n\n";
 	$message .= "Questions? Please let me know at [ lmoiola@aretemm.net ].";
 	$message .= "\n\n";
