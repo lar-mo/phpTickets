@@ -71,14 +71,12 @@
 			
 		if(strlen($proj_assignee) < '1') { $extra = "From: The Project Database <phpTickets@aretemm.net>\r\nReply-To: phpTickets@aretemm.net\r\n"; } else { $extra = "From: The Project Database <$submitter_email>\r\nReply-To: $submitter_email\r\n";}
 
-		if (strlen($cc_list) > '1') {
-	
-		$cc_list = preg_replace("/[\r\n\t ]/", " ", trim($cc_list));		
-
-		$cc_list = str_replace(" ", ",", "$cc_list");
-
-			$extra .= "Cc: $cc_list\r\n";
-
+		// Parse CC list into array for individual emails
+		$cc_emails = array();
+		if (strlen($cc_list ?? '') > 1) {
+			$cc_list = preg_replace("/[\r\n\t ]/", " ", trim($cc_list));
+			$cc_list = str_replace(" ", ",", $cc_list);
+			$cc_emails = array_filter(array_map('trim', explode(',', $cc_list)));
 		}
 
 
@@ -117,7 +115,15 @@ print " ";
 
 	}
 
-		mail ($to, $subject, $message, $extra);
+		// Send to primary recipient
+		mail($to, $subject, $message, $extra);
+		
+		// Send individual emails to CC recipients
+		foreach ($cc_emails as $cc_email) {
+			if (filter_var($cc_email, FILTER_VALIDATE_EMAIL)) {
+				mail($cc_email, $subject, $message, $extra);
+			}
+		}
 		
 		  }
 		 }
