@@ -23,8 +23,8 @@
 		$message .= "Type: $proj_type\r\n\n";
 		$message .= "Description:\r\n$proj_desc2\r\n\n";
 		$message .= "*********************************************************\n\n";
-		$message .= "Go to: http://".$_SERVER["SERVER_NAME"]."/tools/pt/\r\n\n";
-		$message .= "Edit this Ticket:\nhttp://".$_SERVER["SERVER_NAME"]."/tools/pt/show.php?type=projects&id=$proj_id";
+		$message .= "Go to: http://".$_SERVER["SERVER_NAME"]."/phpTickets/\r\n\n";
+		$message .= "Edit this Ticket:\nhttp://".$_SERVER["SERVER_NAME"]."/phpTickets/show.php?type=projects&id=$proj_id";
 		
 		} else {
 
@@ -43,8 +43,8 @@
 		$message .= "Type: $proj_type\r\n\n";
 		$message .= "Description:\r\n$proj_desc2\r\n\n";
 		$message .= "*********************************************************\n\n";
-		$message .= "Go to: http://".$_SERVER["SERVER_NAME"]."/tools/pt/\r\n\n";
-		$message .= "Edit this Ticket:\nhttp://".$_SERVER["SERVER_NAME"]."/tools/pt/show.php?type=projects&id=$proj_id";
+		$message .= "Go to: http://".$_SERVER["SERVER_NAME"]."/phpTickets/\r\n\n";
+		$message .= "Edit this Ticket:\nhttp://".$_SERVER["SERVER_NAME"]."/phpTickets/show.php?type=projects&id=$proj_id";
 
 
 		}
@@ -103,11 +103,11 @@ print " ";
 
 		$message .= "\r\n\nRelated Tickets:\n";
 
-		$message .= "http://".$_SERVER["SERVER_NAME"]."/tools/pt/list_project.php?parent_id=$parent_id (parent)";
+		$message .= "http://".$_SERVER["SERVER_NAME"]."/phpTickets/list_project.php?parent_id=$parent_id (parent)";
 
 		} else {
 	
-		$message .= "http://".$_SERVER["SERVER_NAME"]."/tools/pt/show.php?type=projects&id=$theproj_child\n";
+		$message .= "http://".$_SERVER["SERVER_NAME"]."/phpTickets/show.php?type=projects&id=$theproj_child\n";
 
 		}
 
