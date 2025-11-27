@@ -1,6 +1,7 @@
 <html>
 <HEAD>
 	<TITLE> The Personnel and Project Management Tool </TITLE>
+	<link rel="shortcut icon" href="images/favicon.png" />
 </HEAD>
 
 <FRAMESET rows="100%" frameborder="0" framespacing="0" border="0">
